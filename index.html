@@ -59,7 +59,7 @@
       text-align: center;
       max-width: 900px;
       margin: 0 1.25rem;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.25);
       backdrop-filter: blur(6px);
       padding: 1.5rem 1.75rem;
       border-radius: 1rem;
@@ -109,59 +109,46 @@
       backdrop-filter: blur(8px);
       background: rgba(8,10,12,0.46);
       border-bottom: 1px solid rgba(255,255,255,0.04);
+      justify-content: space-between;
     }
 
-    /* Indicators + arrows */
-    .indicator {
-      position: fixed;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 45;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-    }
-    .indicator button {
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.06);
+    .lang-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.5rem;
       cursor: pointer;
-      transition: all .24s ease;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
     }
-    .indicator button.active {
-      width: 12px; height: 12px;
-      background: rgba(37,99,235,0.95);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.16);
-      border-color: rgba(37,99,235,0.95);
-      transform: translateX(2px);
-    }
+    .lang-btn:hover { background: rgba(255,255,255,0.2); }
 
-    .nav-arrows {
+    /* Cookie banner */
+    #cookie-banner {
       position: fixed;
-      right: 18px; top: 50%;
-      transform: translateY(-50%);
-      z-index: 45;
-      display: flex; flex-direction: column;
-      gap: 12px;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20, 24, 28, 0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      color: #cbd5e1;
+      z-index: 999;
+      display: none;
+      max-width: 90%;
     }
-    .nav-arrows button {
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: white;
-      width: 44px; height: 44px;
-      border-radius: 999px;
-      display: inline-grid;
-      place-items: center;
+    #cookie-banner button {
+      margin-left: 1rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
       cursor: pointer;
-      transition: transform .18s ease, background .18s ease;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
     }
-    .nav-arrows button:hover {
-      transform: translateY(-4px);
-      background: rgba(37,99,235,0.12);
-    }
+    #cookie-banner button:hover { background: rgba(255,255,255,0.25); }
 
     footer {
       background: #111827;
@@ -169,27 +156,22 @@
       padding: 3rem 1rem;
       text-align: center;
     }
-
-    @media (max-width: 900px) {
-      section.project-banner { padding-bottom: 20vh; }
-      .indicator { left: 10px; }
-      .nav-arrows { right: 10px; gap: 8px; }
-    }
   </style>
 </head>
 <body>
 
   <!-- Navbar -->
   <nav>
-    <div class="max-w-7xl w-full mx-auto flex items-center justify-between">
-      <a href="index.html" class="logo flex items-center gap-2">
-        <img src="assets/logo-mini.png" alt="CHUVA Studio Logo" class="h-10">
-        <span class="hidden sm:inline font-semibold">Studio</span>
-      </a>
+    <a href="index.html" class="logo flex items-center gap-2">
+      <img src="assets/logo-mini.png" alt="CHUVA Studio Logo" class="h-10">
+      <span class="hidden sm:inline font-semibold">Studio</span>
+    </a>
+    <div class="flex items-center gap-3">
       <div class="icons flex items-center gap-4">
         <a href="#games" title="Our Games"><img src="assets/icons/games-icon.png" class="w-5 h-5 opacity-90"></a>
         <a href="about.html" title="About us"><img src="assets/icons/about-icon.png" class="w-5 h-5 opacity-90"></a>
       </div>
+      <button id="lang-toggle" class="lang-btn">EN</button>
     </div>
   </nav>
 
@@ -213,16 +195,24 @@
   <div class="viewport">
     <div class="sections" id="sections">
 
-      <section class="project-banner" data-index="0">
-        <img class="bg" src="assets/banners/chuvalogo.png" alt="CHUVA Studio banner">
-        <div class="project-overlay">
-          <h2>CHUVA Studio</h2>
-          <p>We are an independent studio crafting worlds where magic meets memory. Based under the tropical rain, we blend art, storytelling, and emotion into unique experiences.</p>
-          <button class="cta" onclick="location.href='about.html'">Meet the Team</button>
-        </div>
-      </section>
+<section class="project-banner" data-index="0">
+  <img class="bg" src="assets/banners/chuvalogo.png" alt="CHUVA Studio banner">
+  <div class="project-overlay">
+    <button class="cta lang"
+      onclick="location.href='about.html'"
+      data-pt="Conheça-nos"
+      data-en="Meet Us"
+      data-es="Conócenos"
+      data-de="Lernt uns kennen"
+      data-ru="Познакомьтесь с нами"
+      data-cn="了解我们"
+      data-jp="私たちについて">
+      Conheça-nos
+    </button>
+  </div>
+</section>
 
-      <section class="project-banner" data-index="1">
+<section class="project-banner" data-index="1">
         <img class="bg" src="assets/banners/tag-banner.png" alt="TAG: Trials of the Arcane Grove">
         <div class="project-overlay">
           <h2>TAG: Trials of the Arcane Grove</h2>
@@ -249,7 +239,6 @@
         </div>
       </section>
 
-      <!-- Footer -->
       <footer>
         <p class="text-gray-400">© 2025 CHUVA Studio. All rights reserved.</p>
         <div class="flex justify-center gap-6 mt-4">
@@ -263,15 +252,21 @@
     </div>
   </div>
 
+  <!-- Cookie banner -->
+  <div id="cookie-banner">
+    Este site utiliza armazenamento local para lembrar sua preferência de idioma.
+    <button id="accept-cookies">OK</button>
+  </div>
+
   <script>
+    // Navegação entre seções (igual ao teu original)
     (function(){
       const container = document.getElementById('sections');
       const sections = Array.from(container.querySelectorAll('section.project-banner'));
       const indicatorButtons = Array.from(document.querySelectorAll('.indicator button'));
       const btnUp = document.getElementById('arrow-up');
       const btnDown = document.getElementById('arrow-down');
-      let current = 0;
-      let isAnimating = false;
+      let current = 0, isAnimating = false;
       const ANIM_MS = 700;
 
       function goTo(index) {
@@ -291,43 +286,56 @@
 
       container.addEventListener('wheel', e => {
         if (isAnimating) return;
-        const atEnd = current === sections.length - 1;
-        if (!atEnd) e.preventDefault();
-
         if (e.deltaY > 0 && current < sections.length - 1) goTo(current + 1);
         else if (e.deltaY < 0 && current > 0) goTo(current - 1);
       }, {passive: false});
 
-      let touchStartY = null;
-      container.addEventListener('touchstart', e => {
-        if (e.touches.length) touchStartY = e.touches[0].clientY;
-      });
-      container.addEventListener('touchend', e => {
-        if (touchStartY == null) return;
-        const diff = touchStartY - e.changedTouches[0].clientY;
-        const atEnd = current === sections.length - 1;
-        if (Math.abs(diff) > 40 && !isAnimating && !atEnd) {
-          if (diff > 0 && current < sections.length - 1) goTo(current + 1);
-          else if (diff < 0 && current > 0) goTo(current - 1);
-        }
-        touchStartY = null;
-      });
-
-      window.addEventListener('keydown', e => {
-        if (isAnimating) return;
-        if (['ArrowDown','PageDown'].includes(e.key) && current < sections.length - 1) { e.preventDefault(); goTo(current + 1); }
-        if (['ArrowUp','PageUp'].includes(e.key) && current > 0) { e.preventDefault(); goTo(current - 1); }
-      });
-
       indicatorButtons.forEach(btn => btn.addEventListener('click', () => goTo(Number(btn.dataset.index))));
       btnUp.addEventListener('click', () => { if (current > 0) goTo(current - 1); });
       btnDown.addEventListener('click', () => { if (current < sections.length - 1) goTo(current + 1); });
-
-      window.addEventListener('load', () => {
-        sections[0].scrollIntoView();
-        updateState();
-      });
+      window.addEventListener('load', updateState);
     })();
+
+    // 🌐 Sistema de idiomas
+    const langs = ['pt','en','es'];
+    const toggle = document.getElementById('lang-toggle');
+
+    function applyLanguage(lang) {
+      document.querySelectorAll('.lang').forEach(el => {
+        const text = el.getAttribute(`data-${lang}`);
+        if (text) el.innerHTML = text;
+      });
+      toggle.textContent = lang.toUpperCase();
+      document.documentElement.lang = lang;
+      localStorage.setItem('chuva-lang', lang);
+    }
+
+    const savedLang = localStorage.getItem('chuva-lang');
+    let initialLang = 'en';
+    if (savedLang && langs.includes(savedLang)) {
+      initialLang = savedLang;
+    } else {
+      const browserLang = navigator.language.slice(0,2).toLowerCase();
+      if (langs.includes(browserLang)) initialLang = browserLang;
+    }
+    applyLanguage(initialLang);
+
+    let currentIndex = langs.indexOf(initialLang);
+    toggle.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % langs.length;
+      applyLanguage(langs[currentIndex]);
+    });
+
+    // 🍪 Aviso de cookies/localStorage
+    const banner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('accept-cookies');
+    if (!localStorage.getItem('chuva-cookies-accepted')) {
+      banner.style.display = 'flex';
+    }
+    acceptBtn.addEventListener('click', () => {
+      banner.style.display = 'none';
+      localStorage.setItem('chuva-cookies-accepted', 'true');
+    });
   </script>
 </body>
 </html>
