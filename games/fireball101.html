@@ -24,16 +24,17 @@
 <body class="bg-gray-900 text-white">
 
   <!-- Navbar -->
-  <nav class="fixed w-full top-0 left-0 z-50 bg-gray-900 bg-opacity-90 border-b border-gray-700">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="../index.html" class="flex items-center space-x-2">
-        <img src="../assets/logo-mini.png" alt="CHUVA Studio Logo" class="w-10 h-10" />
-        <span class="font-bold text-lg">CHUVA Studio</span>
-      </a>
-      <div class="space-x-6">
-        <a href="../index.html#games" class="hover:text-blue-400 transition">Our Games</a>
-        <a href="../about.html" class="hover:text-blue-400 transition">About Us</a>
+  <nav>
+    <a href="index.html" class="logo flex items-center gap-2">
+      <img src="assets/logo-mini.png" alt="CHUVA Studio Logo" class="h-10">
+      <span class="hidden sm:inline font-semibold">Studio</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <div class="icons flex items-center gap-4">
+        <a href="#games" title="Our Games"><img src="assets/icons/games-icon.png" class="w-5 h-5 opacity-90"></a>
+        <a href="about.html" title="About us"><img src="assets/icons/about-icon.png" class="w-5 h-5 opacity-90"></a>
       </div>
+      <button id="lang-toggle" class="lang-btn">EN</button>
     </div>
   </nav>
 
