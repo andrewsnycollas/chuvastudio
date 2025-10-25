@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIREBALL101 | CHUVA Studio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: #111827;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+    }
+    iframe {
+      border: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <!-- Navbar -->
+  <nav class="fixed w-full top-0 left-0 z-50 bg-gray-900 bg-opacity-90 border-b border-gray-700">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center space-x-2">
+        <img src="../assets/logo-mini.png" alt="CHUVA Studio Logo" class="w-10 h-10" />
+        <span class="font-bold text-lg">CHUVA Studio</span>
+      </a>
+      <div class="space-x-6">
+        <a href="../index.html#games" class="hover:text-blue-400 transition">Our Games</a>
+        <a href="../about.html" class="hover:text-blue-400 transition">About Us</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-16 text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <!-- Placeholder for game logo -->
+      <img src="../assets/games/fireball101-logo.png" alt="FIREBALL101 Logo" class="mx-auto mb-8 w-64 h-auto" />
+
+      <h1 class="text-5xl font-bold mb-4 text-blue-400">FIREBALL101</h1>
+      <p class="text-gray-400 mb-10">A blazing fast action game born from a web game jam. Feel the heat!</p>
+
+      <a href="#play" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg transition">🔥 Play Now</a>
+    </div>
+  </section>
+
+  <!-- Game Description -->
+  <section class="max-w-4xl mx-auto py-16 px-4 text-center border-t border-gray-800 border-b">
+    <h2 class="text-3xl font-bold mb-4 text-blue-400">About the Game</h2>
+    <p class="text-gray-300 leading-relaxed">
+      [Your game description goes here.]  
+      Talk about the jam theme, gameplay mechanics, inspirations, or development story.  
+      Keep it short, warm, and engaging — we’ll make this look like a devlog entry later.
+    </p>
+  </section>
+
+  <!-- Game Embed -->
+  <section id="play" class="pt-16 pb-24 bg-black">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="w-full h-[80vh] rounded-lg overflow-hidden shadow-lg">
+        <iframe 
+          src="../assets/games/fireball101/index.html" 
+          width="100%" 
+          height="100%" 
+          allow="fullscreen *; autoplay; gamepad; cross-origin-isolated">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 py-10 border-t border-gray-700">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+      <p class="text-gray-400">© 2025 CHUVA Studio. All rights reserved.</p>
+      <div class="flex space-x-4">
+        <a href="#" class="hover:text-blue-400">Twitter</a>
+        <a href="#" class="hover:text-blue-400">Instagram</a>
+        <a href="#" class="hover:text-blue-400">YouTube</a>
+        <a href="#" class="hover:text-blue-400">Steam</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Navbar hide/show script -->
+  <script>
+    let lastScrollY = window.scrollY;
+    const nav = document.querySelector("nav");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 100) {
+        nav.style.transform = "translateY(-100%)";
+        nav.style.transition = "transform 0.3s ease-out";
+      } else {
+        nav.style.transform = "translateY(0)";
+        nav.style.transition = "transform 0.3s ease-out";
+      }
+      lastScrollY = window.scrollY;
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About - CHUVA Studio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(#0b0f13, #0b1f29);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    #rain-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* NAVBAR CLOUD TEXTURE */
+    .cloud-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 84px;
+      overflow: hidden;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cloud-texture {
+      position: absolute;
+      inset: 0;
+      width: 200%;
+      height: 150%;
+      background-image: url('assets/textures/cloud-texture.png');
+      background-repeat: repeat-x;
+      background-position: 0 center;
+      background-size: auto 100%;
+      animation: moveClouds 60s linear infinite;
+      opacity: 0.4;
+    }
+
+    @keyframes moveClouds {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .nav-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .logo img {
+      height: 44px;
+      width: auto;
+    }
+
+    .icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icons a img {
+      width: 22px;
+      height: 22px;
+      opacity: 0.9;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .icons a:hover img {
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .lang-btn:hover { background: rgba(255,255,255,0.2); }
+
+    main {
+      position: relative;
+      z-index: 10;
+      padding-top: 120px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 2.5rem 1rem;
+      text-align: center;
+    }
+
+    .section h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      opacity: 0.9;
+      margin-bottom: 1.2rem;
+    }
+
+    .section p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin: 0 auto 0.7rem auto;
+      max-width: 68ch;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .member {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .member:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+
+    .member img {
+      width:96px;
+      height:96px;
+      border-radius:999px;
+      object-fit:cover;
+      display:block;
+      margin:0 auto 0.75rem;
+      border:2px solid rgba(255,255,255,0.06);
+    }
+
+    footer {
+      margin-top: 3.5rem;
+      padding: 3rem 1rem;
+      background: #0b1116;
+      color: #cbd5e1;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="rain-canvas"></canvas>
+
+  <header class="cloud-nav">
+    <div class="cloud-texture"></div>
+    <div class="nav-content">
+      <a class="logo" href="index.html">
+        <img src="assets/logo-mini.png" alt="CHUVA logo">
+        <span class="hidden sm:inline font-semibold">CHUVA Studio</span>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <div class="icons">
+          <a href="index.html#games" title="Nossos Jogos"><img src="assets/icons/games-icon.png" alt=""></a>
+          <a href="about.html" title="Sobre nós"><img src="assets/icons/about-icon.png" alt=""></a>
+        </div>
+        <button id="lang-toggle" class="lang-btn">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Studio name and slogan -->
+    <section class="section">
+      <h1 class="lang"
+        data-pt="CHUVA Studio" data-en="CHUVA Studio"
+        data-es="CHUVA Studio" data-de="CHUVA Studio"
+        data-ru="CHUVA Studio" data-cn="楚瓦工作室" data-jp="チュヴァ・スタジオ">
+        CHUVA Studio
+      </h1>
+      <h2 class="lang"
+        data-pt="Sentimentos Reais, Imaginados."
+        data-en="Real Feelings, Imagined."
+        data-es="Sentimientos Reales, Imaginados."
+        data-de="Echte Gefühle, Erdacht."
+        data-ru="Настоящие чувства. Воображённые."
+        data-cn="真实的感受，源于想象。"
+        data-jp="本物の感情、想像で。">
+        Real Feelings, Imagined.
+      </h2>
+
+      <!-- Compact mini bio -->
+      <p class="lang"
+        data-pt=""
+        data-en=""
+        data-es=""
+        data-de=""
+        data-ru=""
+        data-cn=""
+        data-jp=""></p>
+      <p class="lang"
+        data-pt=""
+        data-en=""
+        data-es=""
+        data-de=""
+        data-ru=""
+        data-cn=""
+        data-jp=""></p>
+    </section>
+
+    <!-- Team -->
+    <section class="section">
+      <h2 class="lang"
+        data-pt="Nosso Time" data-en="Our Team"
+        data-es="Nuestro Equipo" data-de="Unser Team"
+        data-ru="Наша команда" data-cn="我们的团队" data-jp="私たちのチーム">
+        Nosso Time
+      </h2>
+
+      <div class="team-grid">
+        <div class="member"><img src="assets/team/andrews.png"><h3>Andrews</h3><p class="lang" data-pt="Fundador / Diretor Criativo" data-en="Founder / Creative Director"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/marcos.png"><h3>Marcos Genú</h3><p class="lang" data-pt="Artista / Designer Visual" data-en="Artist / Visual Designer"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/mohamed.png"><h3>Mohamed</h3><p class="lang" data-pt="Diretor Técnico / Programador" data-en="Technical Director / Programmer"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/brendo.png"><h3>Brendo</h3><p class="lang" data-pt="Animador / Artista Geral" data-en="Animator / Art Generalist"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/camila.png"><h3>Camila</h3><p class="lang" data-pt="Roteirista / Designer Narrativa" data-en="Writer / Narrative Designer"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/gabriel.png"><h3>Gabriel</h3><p class="lang" data-pt="Compositor / Designer de Som" data-en="Composer / Sound Designer"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/richard.png"><h3>Richard</h3><p class="lang" data-pt="QA / Level Designer" data-en="QA / Level Designer"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/miguel.png"><h3>Miguel (Angel)</h3><p class="lang" data-pt="Artista Conceitual / Ilustrador" data-en="Concept Artist / Illustrator"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+        <div class="member"><img src="assets/team/rick.png"><h3>Rick Galassio</h3><p class="lang" data-pt="Produtor / Mentor" data-en="Producer / Mentor"></p><p class="lang" data-pt="" data-en="" data-es="" data-de="" data-ru="" data-cn="" data-jp=""></p></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 CHUVA Games.
+        <span class="lang"
+          data-pt="Todos os direitos reservados." data-en="All rights reserved."
+          data-es="Todos los derechos reservados." data-de="Alle Rechte vorbehalten."
+          data-ru="Все права защищены." data-cn="版权所有。" data-jp="全著作権所有。">
+          Todos os direitos reservados.
+        </span>
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    // Rain animation
+    const canvas = document.getElementById('rain-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, drops = [];
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      drops = Array.from({ length: Math.max(120, Math.floor(w/10)) }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        len: 8 + Math.random() * 18,
+        speed: 1.5 + Math.random() * 4
+      }));
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = 'rgba(173,216,230,0.18)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (const d of drops) {
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x, d.y + d.len);
+        d.y += d.speed;
+        if (d.y > h) d.y = -20;
+      }
+      ctx.stroke();
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // Language toggle
+    const langs = ['pt', 'en', 'es', 'de', 'ru', 'cn', 'jp'];
+    let current = 0;
+    const toggle = document.getElementById('lang-toggle');
+    toggle.addEventListener('click', () => {
+      current = (current + 1) % langs.length;
+      const lang = langs[current];
+      toggle.textContent = lang.toUpperCase();
+      document.querySelectorAll('.lang').forEach(el => {
+        const text = el.getAttribute(`data-${lang}`);
+        if (text) el.innerHTML = text;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Game Idea Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at top, #20202a 0%, #111 100%);
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 30px;
+      color: #fff;
+      text-shadow: 0 0 10px #555;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      width: 280px;
+      height: 140px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2em;
+      text-align: center;
+      padding: 10px 15px;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    button {
+      background: linear-gradient(90deg, #ffb400, #ff6600);
+      border: none;
+      border-radius: 12px;
+      padding: 15px 40px;
+      color: #fff;
+      font-size: 1.3em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255,150,0,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255,180,0,0.6);
+    }
+
+    .label {
+      font-size: 0.8em;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Game Idea Generator</h1>
+
+  <div class="cards">
+    <div class="card" id="card1">
+      <div class="label">Protagonist</div>
+      <div id="charText">—</div>
+    </div>
+    <div class="card" id="card2">
+      <div class="label">Object / Mechanic</div>
+      <div id="objText">—</div>
+    </div>
+    <div class="card" id="card3">
+      <div class="label">Setting / Environment</div>
+      <div id="envText">—</div>
+    </div>
+  </div>
+
+  <button id="generateBtn">Generate Idea</button>
+
+  <script>
+    // ─── WORD POOLS ──────────────────────────────────────────
+
+    const adjectivesA = [
+      "Cursed", "Sleepy", "Fiery", "Ancient", "Lost", "Tiny", "Gigantic", "Glowing", "Rusty", "Greedy",
+      "Lonely", "Feral", "Holy", "Haunted", "Crimson", "Silent", "Wild", "Radiant", "Tired", "Mysterious",
+      "Enraged", "Timid", "Proud", "Forgotten", "Melancholic", "Icy", "Burning", "Whispering", "Broken", "Golden"
+    ];
+
+    const adjectivesB = [
+      "Mechanical", "Cyber", "Frozen", "Toxic", "Golden", "Shadow", "Electric", "Crystal", "Organic", "Arcane",
+      "Steam-Powered", "Digital", "Phantom", "Ethereal", "Magnetic", "Radioactive", "Clockwork", "Volcanic", "Metallic", "Celestial",
+      "Haunted", "Viral", "Alchemical", "Plastic", "Rubber", "Synthetic", "Quantum", "Temporal", "Illusory", "Holographic"
+    ];
+
+    const characters = [
+      "Knight", "Witch", "Cat", "Slime", "Robot", "Frog", "Pirate", "Dragon", "Ghost", "Hunter",
+      "Angel", "Demon", "Archer", "Golem", "Wizard", "Ninja", "Fairy", "Necromancer", "Gladiator", "Scientist",
+      "Druid", "Vampire", "Werewolf", "Jester", "King", "Queen", "Scout", "Shaman", "Blob", "Puppet"
+    ];
+
+    const mechanics = [
+      "Time Loop", "Card Deck System", "Summoning", "Gravity Swap", "Cooking", "Spell Crafting", "Rhythm Combat",
+      "Resource Management", "Mutation Upgrade", "Mind Control", "Shape-Shifting", "Music Puzzle", "Pet Fusion",
+      "Memory Rewind", "Dream Navigation", "Light Reflection", "Chain Reaction", "Soul Link", "Elemental Fusion", "Color Mixing",
+      "Turn-Based Tactics", "Stealth", "Procedural Dungeon", "Building", "Parkour", "Fishing", "Photo Capture", "Dialogue Choices",
+      "Emotion System", "Crafting+Exploration", "Roguelike+Horror", "Platformer+Battle Royale"
+    ];
+
+    const envAdjectives = [
+      "Frozen", "Haunted", "Ancient", "Abandoned", "Floating", "Toxic", "Burning", "Cyberpunk", "Underwater", "Endless",
+      "Shattered", "Dreamlike", "Cursed", "Crystal", "Dark", "Luminous", "Mechanical", "Organic", "Desolate", "Celestial"
+    ];
+
+    const envNouns = [
+      "Forest", "Desert", "Temple", "City", "Castle", "Swamp", "Cavern", "Library", "Lab", "Volcano",
+      "Ruins", "Skyland", "Graveyard", "Sanctuary", "Island", "Dimension", "Garden", "Machine", "Ocean", "Arena"
+    ];
+
+    // ─── GENERATORS ──────────────────────────────────────────
+
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateCharacter() {
+      const adj1 = pickRandom(adjectivesA);
+      const adj2 = pickRandom(adjectivesB);
+      const noun = pickRandom(characters);
+      return `${adj1} ${adj2} ${noun}`;
+    }
+
+    function generateObject() {
+      return pickRandom(mechanics);
+    }
+
+    function generateSetting() {
+      const adj = pickRandom(envAdjectives);
+      const noun = pickRandom(envNouns);
+      return `${adj} ${noun}`;
+    }
+
+    // ─── EVENT ───────────────────────────────────────────────
+
+    document.getElementById("generateBtn").addEventListener("click", () => {
+      document.getElementById("charText").textContent = generateCharacter();
+      document.getElementById("objText").textContent = generateObject();
+      document.getElementById("envText").textContent = generateSetting();
+    });
+  </script>
+</body>
+</html>
