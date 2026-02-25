@@ -26,20 +26,23 @@
 <body class="bg-gray-900 text-white">
 
   <!-- Navbar -->
-  <nav>
-    <a href="index.html" class="logo flex items-center gap-2">
-      <img src="assets/logo-mini.png" alt="CHUVA Studio Logo" class="h-10">
-      <span class="hidden sm:inline font-semibold">Studio</span>
-    </a>
-    <div class="flex items-center gap-3">
-      <div class="icons flex items-center gap-4">
-        <a href="#games" title="Our Games"><img src="assets/icons/games-icon.png" class="w-5 h-5 opacity-90"></a>
-        <a href="about.html" title="About us"><img src="assets/icons/about-icon.png" class="w-5 h-5 opacity-90"></a>
-      </div>
-      <button id="lang-toggle" class="lang-btn">EN</button>
-    </div>
-  </nav>
+  <header class="cloud-nav">
+    <div class="cloud-texture"></div>
+    <div class="nav-content">
+      <a class="logo" href="../index.html">
+        <img src="../assets/logo-mini.png" alt="CHUVA logo">
+        <span class="hidden sm:inline font-semibold">CHUVA Studio</span>
+      </a>
 
+      <div class="flex items-center gap-4">
+        <div class="icons">
+          <a href="../index.html#games" title="Nossos Jogos"><img src="../assets/icons/games-icon.png" alt="Jogos"></a>
+          <a href="../about.html" title="Sobre nós"><img src="../assets/icons/about-icon.png" alt="Sobre"></a>
+        </div>
+        <button id="lang-toggle" class="lang-btn">EN</button>
+      </div>
+    </div>
+  </header>
   <!-- Emulator Section -->
   <section class="pt-20">
     <div id="javatari-screen"></div>
