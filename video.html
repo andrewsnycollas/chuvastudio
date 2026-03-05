@@ -60,8 +60,11 @@
             margin-top: 10px;
         }
         button:hover { background: #aecbfa; }
+        button:disabled { background: #5f6368; cursor: not-allowed; }
         
         .status { color: #8ab4f8; font-size: 0.9em; margin-top: 5px; }
+        .error { color: #f28b82; }
+        .success { color: #81c995; }
     </style>
 </head>
 <body>
@@ -80,40 +83,38 @@
     </div>
 
     <div class="controls">
-        <!-- Step 1: Local Media -->
         <div class="step">
             <h3>1. Start Camera</h3>
-            <button onclick="startCamera()">Enable Camera</button>
+            <button id="btnCamera" onclick="startCamera()">Enable Camera</button>
             <div id="status1" class="status">Waiting...</div>
         </div>
 
-        <!-- Step 2: Create Offer -->
         <div class="step">
             <h3>2. Create Offer (User A)</h3>
             <p>If you are starting the call, click this button and send the text to your friend.</p>
-            <button onclick="createOffer()">Create Offer</button>
+            <button id="btnOffer" onclick="createOffer()" disabled>Create Offer</button>
             <textarea id="localOffer" placeholder="Generated Offer will appear here..."></textarea>
+            <div id="statusOffer" class="status"></div>
         </div>
 
-        <!-- Step 3: Receive Answer -->
         <div class="step">
             <h3>3. Paste Answer (User A)</h3>
             <p>Paste the answer code your friend sends you here.</p>
             <textarea id="remoteAnswer" placeholder="Paste friend's answer here..."></textarea>
-            <button onclick="addAnswer()">Connect</button>
+            <button id="btnConnect" onclick="addAnswer()">Connect</button>
+            <div id="statusConnect" class="status"></div>
         </div>
 
         <hr style="border-color: #5f6368; margin: 20px 0;">
 
-        <!-- Step 4: Receive Offer (User B) -->
         <div class="step">
             <h3>4. Paste Offer (User B)</h3>
             <p>If you received an offer code, paste it here.</p>
             <textarea id="remoteOffer" placeholder="Paste friend's offer here..."></textarea>
-            <button onclick="createAnswer()">Create Answer</button>
+            <button id="btnAnswer" onclick="createAnswer()">Create Answer</button>
+            <div id="statusAnswer" class="status"></div>
         </div>
 
-        <!-- Step 5: Send Answer (User B) -->
         <div class="step">
             <h3>5. Send Answer (User B)</h3>
             <p>Copy this text and send it back to the person who started the call.</p>
@@ -122,96 +123,138 @@
     </div>
 
     <script>
-        // Configuration using public Google STUN servers to traverse NAT/Firewalls
         const servers = {
             iceServers: [
                 { urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] }
-            ],
-            iceCandidatePoolSize: 10
+            ]
         };
 
         let pc = new RTCPeerConnection(servers);
-        let localStream;
+        let localStream = null;
+        let isOfferCreated = false;
+        let isAnswerCreated = false;
 
         const localVideo = document.getElementById('localVideo');
         const remoteVideo = document.getElementById('remoteVideo');
         const status1 = document.getElementById('status1');
+        const btnCamera = document.getElementById('btnCamera');
+        const btnOffer = document.getElementById('btnOffer');
+        const btnAnswer = document.getElementById('btnAnswer');
+        const btnConnect = document.getElementById('btnConnect');
 
-        // 1. Handle Remote Stream
+        // Handle remote stream
         pc.ontrack = event => {
-            remoteVideo.srcObject = event.streams[0];
+            if (event.streams && event.streams[0]) {
+                remoteVideo.srcObject = event.streams[0];
+            }
         };
 
-        // 2. Handle ICE Candidates (Network info)
+        // Handle ICE connection state changes
+        pc.oniceconnectionstatechange = () => {
+            console.log('ICE Connection State:', pc.iceConnectionState);
+            if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+                document.getElementById('statusConnect').innerHTML = '<span class="success">✓ Connected!</span>';
+                document.getElementById('statusAnswer').innerHTML = '<span class="success">✓ Connected!</span>';
+            } else if (pc.iceConnectionState === 'failed') {
+                document.getElementById('statusConnect').innerHTML = '<span class="error">✗ Connection failed</span>';
+            }
+        };
+
+        // Handle ICE candidates
         pc.onicecandidate = event => {
-            if (event.candidate) {
-                // In a real app, we'd send this to the server. 
-                // Here, we wait until gathering is complete to show the full JSON.
-            } else {
-                // Gathering finished, update the text areas
-                updateTextArea('localOffer', pc.localDescription);
-                updateTextArea('localAnswer', pc.localDescription);
+            if (event.candidate === null) {
+                // ICE gathering complete
+                if (isOfferCreated) {
+                    document.getElementById('localOffer').value = JSON.stringify(pc.localDescription);
+                    document.getElementById('statusOffer').innerHTML = '<span class="success">✓ Offer ready to copy!</span>';
+                }
+                if (isAnswerCreated) {
+                    document.getElementById('localAnswer').value = JSON.stringify(pc.localDescription);
+                    document.getElementById('statusAnswer').innerHTML = '<span class="success">✓ Answer ready to copy!</span>';
+                }
             }
         };
 
-        function updateTextArea(id, desc) {
-            if (desc) {
-                document.getElementById(id).value = JSON.stringify(desc);
-            }
-        }
-
-        // 3. Start Camera
+        // Start camera
         async function startCamera() {
             try {
                 localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 localVideo.srcObject = localStream;
-                localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-                status1.innerText = "Camera Active";
-                status1.style.color = "#0f0";
+                
+                // Add tracks to peer connection
+                localStream.getTracks().forEach(track => {
+                    pc.addTrack(track, localStream);
+                });
+
+                status1.innerHTML = '<span class="success">✓ Camera Active</span>';
+                btnCamera.disabled = true;
+                btnOffer.disabled = false;
             } catch (err) {
-                alert("Error accessing camera: " + err);
-                status1.innerText = "Error: " + err;
+                status1.innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
+                console.error('Camera error:', err);
             }
         }
 
-        // 4. Create Offer (User A)
+        // Create offer
         async function createOffer() {
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-            // We wait for ICE gathering to finish so the JSON is complete
-            pc.onicecandidate = event => {
-                if (!event.candidate) {
-                    document.getElementById('localOffer').value = JSON.stringify(pc.localDescription);
-                }
-            };
+            try {
+                document.getElementById('statusOffer').textContent = 'Creating offer...';
+                
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                
+                isOfferCreated = true;
+                // Wait for ICE gathering to complete (handled in onicecandidate)
+            } catch (err) {
+                document.getElementById('statusOffer').innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
+                console.error('Offer error:', err);
+            }
         }
 
-        // 5. Create Answer (User B)
+        // Create answer
         async function createAnswer() {
-            const offerJson = document.getElementById('remoteOffer').value;
-            if (!offerJson) return alert("Please paste the offer first!");
-            
-            const offer = JSON.parse(offerJson);
-            await pc.setRemoteDescription(offer);
-
-            const answer = await pc.createAnswer();
-            await pc.setLocalDescription(answer);
-
-            pc.onicecandidate = event => {
-                if (!event.candidate) {
-                    document.getElementById('localAnswer').value = JSON.stringify(pc.localDescription);
+            try {
+                const offerJson = document.getElementById('remoteOffer').value.trim();
+                if (!offerJson) {
+                    document.getElementById('statusAnswer').innerHTML = '<span class="error">✗ Please paste the offer first!</span>';
+                    return;
                 }
-            };
+
+                document.getElementById('statusAnswer').textContent = 'Creating answer...';
+                
+                const offer = JSON.parse(offerJson);
+                await pc.setRemoteDescription(offer);
+                
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+                
+                isAnswerCreated = true;
+                // Wait for ICE gathering to complete (handled in onicecandidate)
+            } catch (err) {
+                document.getElementById('statusAnswer').innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
+                console.error('Answer error:', err);
+            }
         }
 
-        // 6. Add Answer (User A)
+        // Add answer (for User A)
         async function addAnswer() {
-            const answerJson = document.getElementById('remoteAnswer').value;
-            if (!answerJson) return alert("Please paste the answer first!");
+            try {
+                const answerJson = document.getElementById('remoteAnswer').value.trim();
+                if (!answerJson) {
+                    document.getElementById('statusConnect').innerHTML = '<span class="error">✗ Please paste the answer first!</span>';
+                    return;
+                }
 
-            const answer = JSON.parse(answerJson);
-            await pc.setRemoteDescription(answer);
-            alert("Connection Attempting... Check the video window!");
+                document.getElementById('statusConnect').textContent = 'Connecting...';
+                
+                const answer = JSON.parse(answerJson);
+                await pc.setRemoteDescription(answer);
+                
+                // Connection will be established via ICE
+            } catch (err) {
+                document.getElementById('statusConnect').innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
+                console.error('Connect error:', err);
+            }
         }
     </script>
 </body>
