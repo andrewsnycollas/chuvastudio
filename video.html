@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P2P Video Chat (No Backend)</title>
+    <title>Auto-Connect P2P Video</title>
+    <!-- Load PeerJS Library from CDN -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
         body { font-family: sans-serif; background: #202124; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         h1 { margin-bottom: 10px; }
@@ -22,6 +24,7 @@
             background: #000;
             border-radius: 8px;
             border: 2px solid #5f6368;
+            object-fit: cover;
         }
 
         .controls {
@@ -29,24 +32,26 @@
             padding: 20px;
             border-radius: 8px;
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             box-sizing: border-box;
+            text-align: center;
         }
 
-        .step { margin-bottom: 20px; border-bottom: 1px solid #5f6368; padding-bottom: 20px; }
-        .step:last-child { border-bottom: none; }
-        
-        textarea {
-            width: 100%;
-            height: 80px;
+        .room-box {
             background: #121212;
-            color: #0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
             border: 1px solid #5f6368;
-            border-radius: 4px;
-            padding: 10px;
+        }
+
+        .room-id {
             font-family: monospace;
-            font-size: 12px;
-            box-sizing: border-box;
+            font-size: 1.2em;
+            color: #8ab4f8;
+            word-break: break-all;
+            margin: 10px 0;
+            display: block;
         }
 
         button {
@@ -57,19 +62,20 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 10px;
+            margin: 5px;
         }
         button:hover { background: #aecbfa; }
         button:disabled { background: #5f6368; cursor: not-allowed; }
         
-        .status { color: #8ab4f8; font-size: 0.9em; margin-top: 5px; }
+        .status { margin-top: 10px; font-weight: bold; }
+        .connected { color: #81c995; }
+        .waiting { color: #fdd663; }
         .error { color: #f28b82; }
-        .success { color: #81c995; }
     </style>
 </head>
 <body>
 
-    <h1>Serverless P2P Video Chat</h1>
+    <h1>Auto-Connect Video Chat</h1>
 
     <div class="video-container">
         <div>
@@ -77,184 +83,125 @@
             <video id="localVideo" autoplay muted playsinline></video>
         </div>
         <div>
-            <p>Remote Peer</p>
+            <p>Peer</p>
             <video id="remoteVideo" autoplay playsinline></video>
         </div>
     </div>
 
     <div class="controls">
-        <div class="step">
-            <h3>1. Start Camera</h3>
-            <button id="btnCamera" onclick="startCamera()">Enable Camera</button>
-            <div id="status1" class="status">Waiting...</div>
+        <div id="setupStep">
+            <h3>1. Enable Camera</h3>
+            <button id="btnStart" onclick="startCamera()">Start Camera</button>
+            <div id="status" class="status"></div>
         </div>
 
-        <div class="step">
-            <h3>2. Create Offer (User A)</h3>
-            <p>If you are starting the call, click this button and send the text to your friend.</p>
-            <button id="btnOffer" onclick="createOffer()" disabled>Create Offer</button>
-            <textarea id="localOffer" placeholder="Generated Offer will appear here..."></textarea>
-            <div id="statusOffer" class="status"></div>
-        </div>
+        <div id="roomStep" style="display:none;">
+            <h3>2. Share this Link</h3>
+            <p>Send this link to your friend to connect automatically:</p>
+            
+            <div class="room-box">
+                <span id="roomLink" class="room-id"></span>
+                <button onclick="copyLink()">Copy Link</button>
+            </div>
 
-        <div class="step">
-            <h3>3. Paste Answer (User A)</h3>
-            <p>Paste the answer code your friend sends you here.</p>
-            <textarea id="remoteAnswer" placeholder="Paste friend's answer here..."></textarea>
-            <button id="btnConnect" onclick="addAnswer()">Connect</button>
-            <div id="statusConnect" class="status"></div>
-        </div>
-
-        <hr style="border-color: #5f6368; margin: 20px 0;">
-
-        <div class="step">
-            <h3>4. Paste Offer (User B)</h3>
-            <p>If you received an offer code, paste it here.</p>
-            <textarea id="remoteOffer" placeholder="Paste friend's offer here..."></textarea>
-            <button id="btnAnswer" onclick="createAnswer()">Create Answer</button>
-            <div id="statusAnswer" class="status"></div>
-        </div>
-
-        <div class="step">
-            <h3>5. Send Answer (User B)</h3>
-            <p>Copy this text and send it back to the person who started the call.</p>
-            <textarea id="localAnswer" placeholder="Generated Answer will appear here..."></textarea>
+            <div id="connectionStatus" class="status waiting">Waiting for peer to join...</div>
         </div>
     </div>
 
     <script>
-        const servers = {
-            iceServers: [
-                { urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] }
-            ]
-        };
-
-        let pc = new RTCPeerConnection(servers);
+        let peer = null;
         let localStream = null;
-        let isOfferCreated = false;
-        let isAnswerCreated = false;
+        let currentCall = null;
 
         const localVideo = document.getElementById('localVideo');
         const remoteVideo = document.getElementById('remoteVideo');
-        const status1 = document.getElementById('status1');
-        const btnCamera = document.getElementById('btnCamera');
-        const btnOffer = document.getElementById('btnOffer');
-        const btnAnswer = document.getElementById('btnAnswer');
-        const btnConnect = document.getElementById('btnConnect');
+        const statusDiv = document.getElementById('status');
+        const roomStep = document.getElementById('roomStep');
+        const roomLinkSpan = document.getElementById('roomLink');
+        const connStatus = document.getElementById('connectionStatus');
 
-        // Handle remote stream
-        pc.ontrack = event => {
-            if (event.streams && event.streams[0]) {
-                remoteVideo.srcObject = event.streams[0];
-            }
-        };
-
-        // Handle ICE connection state changes
-        pc.oniceconnectionstatechange = () => {
-            console.log('ICE Connection State:', pc.iceConnectionState);
-            if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
-                document.getElementById('statusConnect').innerHTML = '<span class="success">✓ Connected!</span>';
-                document.getElementById('statusAnswer').innerHTML = '<span class="success">✓ Connected!</span>';
-            } else if (pc.iceConnectionState === 'failed') {
-                document.getElementById('statusConnect').innerHTML = '<span class="error">✗ Connection failed</span>';
-            }
-        };
-
-        // Handle ICE candidates
-        pc.onicecandidate = event => {
-            if (event.candidate === null) {
-                // ICE gathering complete
-                if (isOfferCreated) {
-                    document.getElementById('localOffer').value = JSON.stringify(pc.localDescription);
-                    document.getElementById('statusOffer').innerHTML = '<span class="success">✓ Offer ready to copy!</span>';
-                }
-                if (isAnswerCreated) {
-                    document.getElementById('localAnswer').value = JSON.stringify(pc.localDescription);
-                    document.getElementById('statusAnswer').innerHTML = '<span class="success">✓ Answer ready to copy!</span>';
-                }
-            }
-        };
-
-        // Start camera
+        // 1. Start Camera & Initialize Peer
         async function startCamera() {
             try {
                 localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 localVideo.srcObject = localStream;
                 
-                // Add tracks to peer connection
-                localStream.getTracks().forEach(track => {
-                    pc.addTrack(track, localStream);
-                });
-
-                status1.innerHTML = '<span class="success">✓ Camera Active</span>';
-                btnCamera.disabled = true;
-                btnOffer.disabled = false;
+                statusDiv.innerHTML = '<span class="connected">✓ Camera Ready</span>';
+                document.getElementById('btnStart').disabled = true;
+                
+                initPeer();
             } catch (err) {
-                status1.innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
-                console.error('Camera error:', err);
+                statusDiv.innerHTML = '<span class="error">✗ Camera Error: ' + err.message + '</span>';
             }
         }
 
-        // Create offer
-        async function createOffer() {
-            try {
-                document.getElementById('statusOffer').textContent = 'Creating offer...';
-                
-                const offer = await pc.createOffer();
-                await pc.setLocalDescription(offer);
-                
-                isOfferCreated = true;
-                // Wait for ICE gathering to complete (handled in onicecandidate)
-            } catch (err) {
-                document.getElementById('statusOffer').innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
-                console.error('Offer error:', err);
-            }
-        }
+        // 2. Initialize PeerJS Connection
+        function initPeer() {
+            // Create a random ID for this session
+            // We also check URL params to see if we are joining someone else
+            const urlParams = new URLSearchParams(window.location.search);
+            const joinId = urlParams.get('join');
 
-        // Create answer
-        async function createAnswer() {
-            try {
-                const offerJson = document.getElementById('remoteOffer').value.trim();
-                if (!offerJson) {
-                    document.getElementById('statusAnswer').innerHTML = '<span class="error">✗ Please paste the offer first!</span>';
-                    return;
+            // Initialize Peer
+            peer = new Peer(null, {
+                debug: 2
+            });
+
+            peer.on('open', (id) => {
+                roomStep.style.display = 'block';
+                
+                if (joinId) {
+                    // We are the JOINER (User B)
+                    roomLinkSpan.textContent = `Joining room: ${joinId}`;
+                    connStatus.textContent = "Connecting to host...";
+                    connectToPeer(joinId);
+                } else {
+                    // We are the HOST (User A)
+                    const shareUrl = `${window.location.origin}${window.location.pathname}?join=${id}`;
+                    roomLinkSpan.textContent = shareUrl;
+                    connStatus.textContent = "Waiting for peer to join...";
                 }
+            });
 
-                document.getElementById('statusAnswer').textContent = 'Creating answer...';
-                
-                const offer = JSON.parse(offerJson);
-                await pc.setRemoteDescription(offer);
-                
-                const answer = await pc.createAnswer();
-                await pc.setLocalDescription(answer);
-                
-                isAnswerCreated = true;
-                // Wait for ICE gathering to complete (handled in onicecandidate)
-            } catch (err) {
-                document.getElementById('statusAnswer').innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
-                console.error('Answer error:', err);
-            }
+            peer.on('error', (err) => {
+                connStatus.innerHTML = `<span class="error">✗ Connection Error: ${err.type}</span>`;
+            });
+
+            // Handle Incoming Call (Host receives call from Joiner)
+            peer.on('call', (call) => {
+                connStatus.textContent = "Peer connecting...";
+                call.answer(localStream); // Answer with our stream
+                handleCall(call);
+            });
         }
 
-        // Add answer (for User A)
-        async function addAnswer() {
-            try {
-                const answerJson = document.getElementById('remoteAnswer').value.trim();
-                if (!answerJson) {
-                    document.getElementById('statusConnect').innerHTML = '<span class="error">✗ Please paste the answer first!</span>';
-                    return;
-                }
+        // 3. Connect to Peer (Joiner calls Host)
+        function connectToPeer(peerId) {
+            const call = peer.call(peerId, localStream);
+            handleCall(call);
+        }
 
-                document.getElementById('statusConnect').textContent = 'Connecting...';
-                
-                const answer = JSON.parse(answerJson);
-                await pc.setRemoteDescription(answer);
-                
-                // Connection will be established via ICE
-            } catch (err) {
-                document.getElementById('statusConnect').innerHTML = '<span class="error">✗ Error: ' + err.message + '</span>';
-                console.error('Connect error:', err);
-            }
+        // 4. Handle Media Stream
+        function handleCall(call) {
+            currentCall = call;
+            
+            call.on('stream', (remoteStream) => {
+                remoteVideo.srcObject = remoteStream;
+                connStatus.innerHTML = '<span class="connected">✓ Connected!</span>';
+            });
+
+            call.on('close', () => {
+                connStatus.innerHTML = '<span class="error">✗ Peer disconnected</span>';
+                remoteVideo.srcObject = null;
+            });
+        }
+
+        // 5. Copy Link Utility
+        function copyLink() {
+            const text = roomLinkSpan.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Link copied! Send it to your friend.");
+            });
         }
     </script>
 </body>
