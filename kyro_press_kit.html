@@ -128,8 +128,55 @@
         }
         .pitch {
             font-size: 1.25em;
+            margin-bottom: 50px;
+        }
+
+        /* Estilos do Trailer */
+        .trailer-section {
             margin-bottom: 60px;
         }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Mantém a proporção 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Call to Action - Steam */
+        .cta-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .btn-steam {
+            display: inline-block;
+            padding: 16px 32px;
+            background-color: #2a475e; 
+            color: #ffffff !important;
+            font-weight: bold;
+            font-size: 1.1em;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 2px solid #66c0f4;
+            transition: all 0.2s ease;
+        }
+        .btn-steam:hover {
+            background-color: #66c0f4;
+            color: #171a21 !important;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
         .fact-sheet {
             background-color: var(--fact-bg); 
             padding: 30px;
@@ -251,6 +298,11 @@
                 justify-content: center;
                 flex-wrap: wrap;
             }
+            .btn-steam {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
@@ -282,6 +334,20 @@
 
         <div class="pitch">
             <p data-i18n="pitchText"><strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.</p>
+        </div>
+
+        <!-- Seção do Trailer -->
+        <div class="trailer-section">
+            <h2 data-i18n="trailerTitle" style="margin-top: 0;">Trailer Oficial</h2>
+            <div class="video-container">
+                <!-- Substitua 'SEU_ID_AQUI' pelo ID do seu vídeo do YouTube -->
+                <iframe src="https://www.youtube.com/embed/yeKR5TwJiMk" title="KYRO - Official Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Call to Action da Steam -->
+        <div class="cta-section">
+            <a href="https://store.steampowered.com/app/3063690/KYRO/" target="_blank" class="btn-steam" data-i18n="steamBtn">Acesse a página na Steam</a>
         </div>
 
         <div class="fact-sheet">
@@ -367,12 +433,14 @@
             }
         });
 
-        // Dicionário de Traduções
+        // Dicionário de Traduções (Atualizado com Steam e Trailer)
         const translations = {
             pt: {
                 themeLight: "Modo Claro",
                 themeDark: "Modo Escuro",
                 pitchText: "<strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.",
+                trailerTitle: "Trailer Oficial",
+                steamBtn: "Acesse a página na Steam",
                 factSheetTitle: "Ficha Técnica (Fact Sheet)",
                 devLabel: "Desenvolvedora:",
                 releaseLabel: "Data de Lançamento:",
@@ -399,6 +467,8 @@
                 themeLight: "Light Mode",
                 themeDark: "Dark Mode",
                 pitchText: "<strong>KYRO</strong> is a top-down pixel art action-adventure game inspired by classics like <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em>, and the <em>Souls</em> series. The player controls Aiden in Ka'a, an Amazonian sci-fi setting, with the core objective of exploring, growing stronger, and defeating a series of challenging bosses, subtly unraveling the world's mysteries through environmental storytelling.",
+                trailerTitle: "Official Trailer",
+                steamBtn: "Visit Steam Page",
                 factSheetTitle: "Fact Sheet",
                 devLabel: "Developer:",
                 releaseLabel: "Release Date:",
@@ -425,6 +495,8 @@
                 themeLight: "Modo Claro",
                 themeDark: "Modo Oscuro",
                 pitchText: "<strong>KYRO</strong> es un juego de acción y aventura top-down en pixel art inspirado en clásicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> y la serie <em>Souls</em>. El jugador asume el control de Aiden en Ka'a, un entorno de ciencia ficción amazónico, con el objetivo central de explorar, fortalecerse y derrotar a una serie de jefes desafiantes, desentrañando los misterios del mundo de forma sutil a través de la narrativa ambiental.",
+                trailerTitle: "Tráiler Oficial",
+                steamBtn: "Visitar página de Steam",
                 factSheetTitle: "Ficha Técnica (Fact Sheet)",
                 devLabel: "Desarrollador:",
                 releaseLabel: "Fecha de Lanzamiento:",
@@ -451,6 +523,8 @@
                 themeLight: "Heller Modus",
                 themeDark: "Dunkler Modus",
                 pitchText: "<strong>KYRO</strong> ist ein Top-Down-Pixel-Art-Action-Adventure, inspiriert von Klassikern wie <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> und der <em>Souls</em>-Reihe. Der Spieler übernimmt die Kontrolle über Aiden in Ka'a, einem amazonischen Sci-Fi-Szenario, mit dem Hauptziel, zu erkunden, stärker zu werden und eine Reihe herausfordernder Bosse zu besiegen, während die Geheimnisse der Welt subtil durch Environmental Storytelling enthüllt werden.",
+                trailerTitle: "Offizieller Trailer",
+                steamBtn: "Steam-Seite besuchen",
                 factSheetTitle: "Datenblatt (Fact Sheet)",
                 devLabel: "Entwickler:",
                 releaseLabel: "Veröffentlichungsdatum:",
@@ -477,6 +551,8 @@
                 themeLight: "亮色模式",
                 themeDark: "暗色模式",
                 pitchText: "<strong>KYRO</strong> 是一款俯视角的像素风动作冒险游戏，灵感来源于《塞尔达传说：众神的三角力量》、《旺达与巨像》以及《魂》系列等经典作品。玩家将控制艾登（Aiden）在充满亚马逊科幻色彩的卡阿（Ka'a）世界中探索。核心目标是探索、变强并击败一系列具有挑战性的Boss，通过环境叙事巧妙地揭开这个世界的神秘面纱。",
+                trailerTitle: "官方预告片",
+                steamBtn: "访问Steam页面",
                 factSheetTitle: "资料说明 (Fact Sheet)",
                 devLabel: "开发商:",
                 releaseLabel: "发售日期:",
@@ -503,6 +579,8 @@
                 themeLight: "ライトモード",
                 themeDark: "ダークモード",
                 pitchText: "<strong>KYRO</strong>は、『ゼルダの伝説 神々のトライフォース』、『ワンダと巨像』、『ソウル』シリーズなどの名作にインスパイアされた、見下ろし型のピクセルアート・アクションアドベンチャーゲームです。プレイヤーはアマゾンのSF世界「Ka'a」でエイデン（Aiden）を操作し、探索し、強くなり、挑戦的なボスたちを倒しながら、環境ストーリーテリングを通じて世界の謎をさりげなく解き明かしていくことが主な目的です。",
+                trailerTitle: "公式トレイラー",
+                steamBtn: "Steamページにアクセス",
                 factSheetTitle: "ファクトシート",
                 devLabel: "開発元:",
                 releaseLabel: "リリース日:",
