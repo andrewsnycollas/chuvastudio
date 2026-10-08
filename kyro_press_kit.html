@@ -98,16 +98,45 @@
             margin: 0 auto;
             padding: 10px 20px 40px 20px;
         }
+
+        /* Cabeçalho e Selo Sobreposto */
         header {
             text-align: center;
             margin-bottom: 50px;
         }
-        header img {
+        .header-wrapper {
+            position: relative;
+            display: inline-block; /* Faz o container abraçar a imagem perfeitamente */
+            width: 100%;
+        }
+        .header-wrapper > img:first-child {
             width: 100%;
             height: auto;
             border-radius: 4px;
             display: block;
         }
+        .banner-seal {
+            position: absolute;
+            bottom: -20px; /* Faz o selo vazar um pouco para fora da imagem principal */
+            right: 20px;
+            width: 130px;
+            height: auto;
+            cursor: help; 
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+            z-index: 10;
+        }
+        .banner-seal:hover {
+            transform: scale(1.08) rotate(-3deg);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8));
+        }
+        [data-theme="light"] .banner-seal {
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+        [data-theme="light"] .banner-seal:hover {
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+        }
+
         h1, h2, h3 {
             color: var(--heading-color);
             font-weight: 600;
@@ -127,38 +156,10 @@
             margin-bottom: 20px;
         }
 
-        /* Pitch e Selo de Prêmios integrados */
         .pitch {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
             font-size: 1.25em;
             margin-bottom: 50px;
-        }
-        .pitch-text {
-            flex: 1;
-        }
-        .pitch-text p {
-            margin: 0;
-        }
-        .pitch-seal {
-            width: 140px;
-            height: auto;
-            flex-shrink: 0;
-            cursor: help; 
-            transition: transform 0.3s ease, filter 0.3s ease;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-        }
-        .pitch-seal:hover {
-            transform: scale(1.08);
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
-        }
-        [data-theme="light"] .pitch-seal {
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-        }
-        [data-theme="light"] .pitch-seal:hover {
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+            text-align: center;
         }
 
         /* Estilos do Trailer */
@@ -339,10 +340,10 @@
                 justify-content: center;
                 flex-wrap: wrap;
             }
-            .pitch {
-                flex-direction: column-reverse;
-                text-align: center;
-                gap: 25px;
+            .banner-seal {
+                width: 90px;
+                bottom: -15px;
+                right: 15px;
             }
             .btn-steam {
                 display: flex;
@@ -375,14 +376,14 @@
 
     <div class="container">
         <header>
-            <img src="art920x430_f2 (1).png" alt="KYRO Key Art - Banner">
+            <div class="header-wrapper">
+                <img src="art920x430_f2 (1).png" alt="KYRO Key Art - Banner">
+                <img src="headscon.png" class="banner-seal" data-i18n-title="awardTooltip" data-i18n-alt="awardTooltip" title="Finalista Headscon 2026" alt="Finalista Headscon 2026">
+            </div>
         </header>
 
         <div class="pitch">
-            <div class="pitch-text">
-                <p data-i18n="pitchText"><strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.</p>
-            </div>
-            <img src="headscon.png" class="pitch-seal" data-i18n-title="awardTooltip" data-i18n-alt="awardTooltip" title="Finalista Headscon 2026" alt="Finalista Headscon 2026">
+            <p data-i18n="pitchText"><strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.</p>
         </div>
 
         <!-- Seção do Trailer -->
@@ -483,7 +484,6 @@
             }
         });
 
-        // Dicionário de Traduções (Com o nome do estúdio limpo de artigos e Tooltip incluso)
         const translations = {
             pt: {
                 themeLight: "Modo Claro",
