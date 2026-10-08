@@ -153,28 +153,72 @@
             border: 0;
         }
 
+        /* Prêmios e Seleções */
+        .awards-section {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background-color: var(--fact-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .awards-section h2 {
+            margin-top: 0;
+            border-bottom: none;
+            margin-bottom: 25px;
+        }
+        .awards-section img {
+            max-width: 160px;
+            height: auto;
+            display: inline-block;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+        }
+        .awards-section img:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+        }
+        [data-theme="light"] .awards-section img {
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+        [data-theme="light"] .awards-section img:hover {
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+        }
+
         /* Call to Action - Steam */
         .cta-section {
             text-align: center;
             margin-bottom: 60px;
         }
         .btn-steam {
-            display: inline-block;
-            padding: 16px 32px;
-            background-color: #2a475e; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 32px;
+            background: linear-gradient(90deg, #171a21 0%, #1b2838 100%);
             color: #ffffff !important;
             font-weight: bold;
             font-size: 1.1em;
             border-radius: 4px;
             text-decoration: none;
-            border: 2px solid #66c0f4;
+            border: 1px solid #2a475e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: all 0.2s ease;
         }
         .btn-steam:hover {
-            background-color: #66c0f4;
-            color: #171a21 !important;
+            background: linear-gradient(90deg, #1b2838 0%, #2a475e 100%);
+            border-color: #66c0f4;
+            color: #ffffff !important;
             text-decoration: none;
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102, 192, 244, 0.2);
+        }
+        .steam-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
         }
 
         .fact-sheet {
@@ -299,7 +343,7 @@
                 flex-wrap: wrap;
             }
             .btn-steam {
-                display: block;
+                display: flex;
                 width: 100%;
                 box-sizing: border-box;
             }
@@ -340,14 +384,22 @@
         <div class="trailer-section">
             <h2 data-i18n="trailerTitle" style="margin-top: 0;">Trailer Oficial</h2>
             <div class="video-container">
-                <!-- Substitua 'SEU_ID_AQUI' pelo ID do seu vídeo do YouTube -->
                 <iframe src="https://www.youtube.com/embed/yeKR5TwJiMk" title="KYRO - Official Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
 
+        <!-- Prêmios e Seleções -->
+        <div class="awards-section">
+            <h2 data-i18n="awardsTitle">Prêmios e Seleções</h2>
+            <img src="headscon.png" alt="Finalista - 3ª Mostra Competitiva de Games da Amazônia Legal (Headscon)" title="Finalista - Headscon">
+        </div>
+
         <!-- Call to Action da Steam -->
         <div class="cta-section">
-            <a href="https://store.steampowered.com/app/3063690/KYRO/" target="_blank" class="btn-steam" data-i18n="steamBtn">Acesse a página na Steam</a>
+            <a href="https://store.steampowered.com/app/3063690/KYRO/" target="_blank" class="btn-steam">
+                <img src="steamlogo.png" alt="Steam" class="steam-icon">
+                <span data-i18n="steamBtn">Acesse a página na Steam</span>
+            </a>
         </div>
 
         <div class="fact-sheet">
@@ -433,13 +485,14 @@
             }
         });
 
-        // Dicionário de Traduções (Atualizado com Steam e Trailer)
+        // Dicionário de Traduções
         const translations = {
             pt: {
                 themeLight: "Modo Claro",
                 themeDark: "Modo Escuro",
                 pitchText: "<strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.",
                 trailerTitle: "Trailer Oficial",
+                awardsTitle: "Prêmios e Seleções",
                 steamBtn: "Acesse a página na Steam",
                 factSheetTitle: "Ficha Técnica (Fact Sheet)",
                 devLabel: "Desenvolvedora:",
@@ -468,6 +521,7 @@
                 themeDark: "Dark Mode",
                 pitchText: "<strong>KYRO</strong> is a top-down pixel art action-adventure game inspired by classics like <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em>, and the <em>Souls</em> series. The player controls Aiden in Ka'a, an Amazonian sci-fi setting, with the core objective of exploring, growing stronger, and defeating a series of challenging bosses, subtly unraveling the world's mysteries through environmental storytelling.",
                 trailerTitle: "Official Trailer",
+                awardsTitle: "Awards & Recognition",
                 steamBtn: "Visit Steam Page",
                 factSheetTitle: "Fact Sheet",
                 devLabel: "Developer:",
@@ -496,6 +550,7 @@
                 themeDark: "Modo Oscuro",
                 pitchText: "<strong>KYRO</strong> es un juego de acción y aventura top-down en pixel art inspirado en clásicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> y la serie <em>Souls</em>. El jugador asume el control de Aiden en Ka'a, un entorno de ciencia ficción amazónico, con el objetivo central de explorar, fortalecerse y derrotar a una serie de jefes desafiantes, desentrañando los misterios del mundo de forma sutil a través de la narrativa ambiental.",
                 trailerTitle: "Tráiler Oficial",
+                awardsTitle: "Premios y Selecciones",
                 steamBtn: "Visitar página de Steam",
                 factSheetTitle: "Ficha Técnica (Fact Sheet)",
                 devLabel: "Desarrollador:",
@@ -524,6 +579,7 @@
                 themeDark: "Dunkler Modus",
                 pitchText: "<strong>KYRO</strong> ist ein Top-Down-Pixel-Art-Action-Adventure, inspiriert von Klassikern wie <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> und der <em>Souls</em>-Reihe. Der Spieler übernimmt die Kontrolle über Aiden in Ka'a, einem amazonischen Sci-Fi-Szenario, mit dem Hauptziel, zu erkunden, stärker zu werden und eine Reihe herausfordernder Bosse zu besiegen, während die Geheimnisse der Welt subtil durch Environmental Storytelling enthüllt werden.",
                 trailerTitle: "Offizieller Trailer",
+                awardsTitle: "Auszeichnungen & Anerkennung",
                 steamBtn: "Steam-Seite besuchen",
                 factSheetTitle: "Datenblatt (Fact Sheet)",
                 devLabel: "Entwickler:",
@@ -552,6 +608,7 @@
                 themeDark: "暗色模式",
                 pitchText: "<strong>KYRO</strong> 是一款俯视角的像素风动作冒险游戏，灵感来源于《塞尔达传说：众神的三角力量》、《旺达与巨像》以及《魂》系列等经典作品。玩家将控制艾登（Aiden）在充满亚马逊科幻色彩的卡阿（Ka'a）世界中探索。核心目标是探索、变强并击败一系列具有挑战性的Boss，通过环境叙事巧妙地揭开这个世界的神秘面纱。",
                 trailerTitle: "官方预告片",
+                awardsTitle: "奖项与认可",
                 steamBtn: "访问Steam页面",
                 factSheetTitle: "资料说明 (Fact Sheet)",
                 devLabel: "开发商:",
@@ -580,6 +637,7 @@
                 themeDark: "ダークモード",
                 pitchText: "<strong>KYRO</strong>は、『ゼルダの伝説 神々のトライフォース』、『ワンダと巨像』、『ソウル』シリーズなどの名作にインスパイアされた、見下ろし型のピクセルアート・アクションアドベンチャーゲームです。プレイヤーはアマゾンのSF世界「Ka'a」でエイデン（Aiden）を操作し、探索し、強くなり、挑戦的なボスたちを倒しながら、環境ストーリーテリングを通じて世界の謎をさりげなく解き明かしていくことが主な目的です。",
                 trailerTitle: "公式トレイラー",
+                awardsTitle: "受賞と評価",
                 steamBtn: "Steamページにアクセス",
                 factSheetTitle: "ファクトシート",
                 devLabel: "開発元:",
