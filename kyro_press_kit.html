@@ -126,9 +126,39 @@
             font-size: 1.4em;
             margin-bottom: 20px;
         }
+
+        /* Pitch e Selo de Prêmios integrados */
         .pitch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
             font-size: 1.25em;
             margin-bottom: 50px;
+        }
+        .pitch-text {
+            flex: 1;
+        }
+        .pitch-text p {
+            margin: 0;
+        }
+        .pitch-seal {
+            width: 140px;
+            height: auto;
+            flex-shrink: 0;
+            cursor: help; 
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+        }
+        .pitch-seal:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+        }
+        [data-theme="light"] .pitch-seal {
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+        [data-theme="light"] .pitch-seal:hover {
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
         }
 
         /* Estilos do Trailer */
@@ -151,39 +181,6 @@
             width: 100%;
             height: 100%;
             border: 0;
-        }
-
-        /* Prêmios e Seleções */
-        .awards-section {
-            text-align: center;
-            margin-bottom: 60px;
-            padding: 40px 20px;
-            background-color: var(--fact-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-        }
-        .awards-section h2 {
-            margin-top: 0;
-            border-bottom: none;
-            margin-bottom: 25px;
-        }
-        .awards-section img {
-            max-width: 160px;
-            height: auto;
-            display: inline-block;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-        }
-        .awards-section img:hover {
-            transform: scale(1.08);
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
-        }
-        [data-theme="light"] .awards-section img {
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-        }
-        [data-theme="light"] .awards-section img:hover {
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
         }
 
         /* Call to Action - Steam */
@@ -342,6 +339,11 @@
                 justify-content: center;
                 flex-wrap: wrap;
             }
+            .pitch {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 25px;
+            }
             .btn-steam {
                 display: flex;
                 width: 100%;
@@ -354,7 +356,7 @@
 
     <nav class="top-nav">
         <a href="https://chuvastudio.com/" class="home-link" title="Voltar para a página inicial">
-            <img src="chuva_logo_1.png" alt="O CHUVA Studio - Home">
+            <img src="chuva_logo_1.png" alt="CHUVA Studio - Home">
         </a>
         <div class="controls">
             <select id="langSwitcher" class="lang-switcher">
@@ -377,7 +379,10 @@
         </header>
 
         <div class="pitch">
-            <p data-i18n="pitchText"><strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.</p>
+            <div class="pitch-text">
+                <p data-i18n="pitchText"><strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.</p>
+            </div>
+            <img src="headscon.png" class="pitch-seal" data-i18n-title="awardTooltip" data-i18n-alt="awardTooltip" title="Finalista Headscon 2026" alt="Finalista Headscon 2026">
         </div>
 
         <!-- Seção do Trailer -->
@@ -386,12 +391,6 @@
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/yeKR5TwJiMk" title="KYRO - Official Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
-        </div>
-
-        <!-- Prêmios e Seleções -->
-        <div class="awards-section">
-            <h2 data-i18n="awardsTitle">Prêmios e Seleções</h2>
-            <img src="headscon.png" alt="Finalista - 3ª Mostra Competitiva de Games da Amazônia Legal (Headscon)" title="Finalista - Headscon">
         </div>
 
         <!-- Call to Action da Steam -->
@@ -405,7 +404,7 @@
         <div class="fact-sheet">
             <h2 data-i18n="factSheetTitle">Ficha Técnica (Fact Sheet)</h2>
             <ul>
-                <li><strong data-i18n="devLabel">Desenvolvedora:</strong> O CHUVA Studio</li>
+                <li><strong data-i18n="devLabel">Desenvolvedor:</strong> CHUVA Studio</li>
                 <li><strong data-i18n="releaseLabel">Data de Lançamento:</strong> <span data-i18n="releaseDate">Outubro de 2026</span></li>
                 <li><strong data-i18n="platformLabel">Plataforma:</strong> PC (Steam)</li>
                 <li><strong data-i18n="genreLabel">Gênero:</strong> <span data-i18n="genreValue">Ação e Aventura / Top-Down / Boss-Rush</span></li>
@@ -447,10 +446,10 @@
             </div>
         </div>
 
-        <h2 data-i18n="aboutTitle">Sobre O CHUVA Studio</h2>
+        <h2 data-i18n="aboutTitle">Sobre CHUVA Studio</h2>
         <div class="about">
             <div class="about-text">
-                <p data-i18n="aboutText">O CHUVA Studio é o estúdio de jogos e projeto solo do desenvolvedor brasileiro Andrews Nycollas. Marido da Dyez e pai de Aiden e Olivia, Andrews possui vasta experiência na indústria asiática de produção e divulgação de jogos. Atuando de forma independente, ele aplica sua vivência profissional no desenvolvimento de todas as frentes de seus jogos. <em>KYRO</em> é o seu título de estreia como desenvolvedor solo.</p>
+                <p data-i18n="aboutText">CHUVA Studio é o estúdio de jogos e projeto solo do desenvolvedor brasileiro Andrews Nycollas. Marido da Dyez e pai de Aiden e Olivia, Andrews possui vasta experiência na indústria asiática de produção e divulgação de jogos. Atuando de forma independente, ele aplica sua vivência profissional no desenvolvimento de todas as frentes de seus jogos. <em>KYRO</em> é o seu título de estreia como desenvolvedor solo.</p>
             </div>
             <div class="about-img">
                 <img src="familia w.png" alt="Pixel art de Andrews, Dyez e Aiden">
@@ -458,7 +457,7 @@
         </div>
 
         <div class="logo-section">
-            <img src="chuva_logo_1.png" alt="Logo O CHUVA Studio">
+            <img src="chuva_logo_1.png" alt="Logo CHUVA Studio">
             <br>
             <a href="https://drive.google.com/uc?export=download&id=1ThnCMXK0rybjqRF588Lnus0xsR_km7o8" class="btn" data-i18n="downloadBtn">Baixar Press Kit e Arquivos de Mídia (.ZIP)</a>
         </div>
@@ -466,7 +465,6 @@
 
     <!-- Scripts de Tema e Idioma -->
     <script>
-        // Lógica de Tema Escuro/Claro
         const themeToggleBtn = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const themeText = document.getElementById('themeText');
@@ -485,17 +483,17 @@
             }
         });
 
-        // Dicionário de Traduções
+        // Dicionário de Traduções (Com o nome do estúdio limpo de artigos e Tooltip incluso)
         const translations = {
             pt: {
                 themeLight: "Modo Claro",
                 themeDark: "Modo Escuro",
                 pitchText: "<strong>KYRO</strong> é um jogo de ação e aventura top-down em pixel art inspirado em clássicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> e a série <em>Souls</em>. O jogador assume o controle de Aiden em Ka'a, um cenário sci-fi amazônico, com o objetivo central de explorar, fortalecer-se e derrotar uma série de chefes desafiadores, desvendando os mistérios do mundo de forma sutil através da narrativa ambiental.",
+                awardTooltip: "Finalista Headscon 2026",
                 trailerTitle: "Trailer Oficial",
-                awardsTitle: "Prêmios e Seleções",
                 steamBtn: "Acesse a página na Steam",
                 factSheetTitle: "Ficha Técnica (Fact Sheet)",
-                devLabel: "Desenvolvedora:",
+                devLabel: "Desenvolvedor:",
                 releaseLabel: "Data de Lançamento:",
                 releaseDate: "Outubro de 2026",
                 platformLabel: "Plataforma:",
@@ -512,16 +510,16 @@
                 f1Text: "As mecânicas principais básicas consistem no disparo de projéteis com um estilingue e na esquiva executando uma \"estrelinha\". Ambas interagem com o mundo e os inimigos de formas criativas, gerando um gameplay emergente. A estrelinha garante invulnerabilidade total e gera munição quando o jogador colide intencionalmente com projéteis inimigos, mas a exploração também recompensa: é possível encontrar baús e quebrar potes pelo cenário para obter munição e regeneração de vida.",
                 f2Title: "O Mundo de Ka'a e Narrativa Ambiental",
                 f2Text: "Ka'a é uma ilha densa de mata flutuando no horizonte de eventos de um buraco negro. A floresta serve como um hub interconectando o bunker onde Aiden mora e as ruínas de uma civilização super futurista. A lore é contada de forma sutil, através de notas espalhadas e da exploração do mapa.",
-                aboutTitle: "Sobre O CHUVA Studio",
-                aboutText: "O CHUVA Studio é o estúdio de jogos e projeto solo do desenvolvedor brasileiro Andrews Nycollas. Marido da Dyez e pai de Aiden e Olivia, Andrews possui vasta experiência na indústria asiática de produção e divulgação de jogos. Atuando de forma independente, ele aplica sua vivência profissional no desenvolvimento de todas as frentes de seus jogos. <em>KYRO</em> é o seu título de estreia como desenvolvedor solo.",
+                aboutTitle: "Sobre CHUVA Studio",
+                aboutText: "CHUVA Studio é o estúdio de jogos e projeto solo do desenvolvedor brasileiro Andrews Nycollas. Marido da Dyez e pai de Aiden e Olivia, Andrews possui vasta experiência na indústria asiática de produção e divulgação de jogos. Atuando de forma independente, ele aplica sua vivência profissional no desenvolvimento de todas as frentes de seus jogos. <em>KYRO</em> é o seu título de estreia como desenvolvedor solo.",
                 downloadBtn: "Baixar Press Kit e Arquivos de Mídia (.ZIP)"
             },
             en: {
                 themeLight: "Light Mode",
                 themeDark: "Dark Mode",
                 pitchText: "<strong>KYRO</strong> is a top-down pixel art action-adventure game inspired by classics like <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em>, and the <em>Souls</em> series. The player controls Aiden in Ka'a, an Amazonian sci-fi setting, with the core objective of exploring, growing stronger, and defeating a series of challenging bosses, subtly unraveling the world's mysteries through environmental storytelling.",
+                awardTooltip: "Headscon 2026 Finalist",
                 trailerTitle: "Official Trailer",
-                awardsTitle: "Awards & Recognition",
                 steamBtn: "Visit Steam Page",
                 factSheetTitle: "Fact Sheet",
                 devLabel: "Developer:",
@@ -541,16 +539,16 @@
                 f1Text: "The core mechanics consist of shooting projectiles with a slingshot and dodging by executing a \"cartwheel\". Both interact with the world and enemies in creative ways, generating emergent gameplay. The cartwheel grants total invulnerability and generates ammo when the player intentionally collides with enemy projectiles, but exploration also rewards you: find chests and break pots around the map to gather ammo and health regeneration.",
                 f2Title: "The World of Ka'a & Environmental Narrative",
                 f2Text: "Ka'a is a dense jungle island floating on the event horizon of a black hole. The forest serves as a hub interconnecting the bunker where Aiden lives and the ruins of a super futuristic civilization. The lore is told subtly, through scattered notes and map exploration.",
-                aboutTitle: "About O CHUVA Studio",
-                aboutText: "O CHUVA Studio is the game studio and solo project of Brazilian developer Andrews Nycollas. Husband to Dyez and father to Aiden and Olivia, Andrews has vast experience in the Asian game production and publishing industry. Working independently, he applies his professional background to the development of all fronts of his games. <em>KYRO</em> is his debut title as a solo developer.",
+                aboutTitle: "About CHUVA Studio",
+                aboutText: "CHUVA Studio is the game studio and solo project of Brazilian developer Andrews Nycollas. Husband to Dyez and father to Aiden and Olivia, Andrews has vast experience in the Asian game production and publishing industry. Working independently, he applies his professional background to the development of all fronts of his games. <em>KYRO</em> is his debut title as a solo developer.",
                 downloadBtn: "Download Press Kit & Media Assets (.ZIP)"
             },
             es: {
                 themeLight: "Modo Claro",
                 themeDark: "Modo Oscuro",
                 pitchText: "<strong>KYRO</strong> es un juego de acción y aventura top-down en pixel art inspirado en clásicos como <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> y la serie <em>Souls</em>. El jugador asume el control de Aiden en Ka'a, un entorno de ciencia ficción amazónico, con el objetivo central de explorar, fortalecerse y derrotar a una serie de jefes desafiantes, desentrañando los misterios del mundo de forma sutil a través de la narrativa ambiental.",
+                awardTooltip: "Finalista Headscon 2026",
                 trailerTitle: "Tráiler Oficial",
-                awardsTitle: "Premios y Selecciones",
                 steamBtn: "Visitar página de Steam",
                 factSheetTitle: "Ficha Técnica (Fact Sheet)",
                 devLabel: "Desarrollador:",
@@ -570,16 +568,16 @@
                 f1Text: "Las mecánicas principales consisten en disparar proyectiles con una resortera y esquivar ejecutando una \"voltereta\". Ambas interactúan con el mundo y los enemigos de formas creativas, generando un gameplay emergente. La voltereta garantiza invulnerabilidad total y genera munición cuando el jugador choca intencionalmente con proyectiles enemigos, pero la exploración también recompensa: es posible encontrar cofres y romper vasijas por el escenario para obtener munición y regeneración de vida.",
                 f2Title: "El Mundo de Ka'a y Narrativa Ambiental",
                 f2Text: "Ka'a es una isla de selva densa que flota en el horizonte de sucesos de un agujero negro. El bosque sirve como un hub que interconecta el búnker donde vive Aiden y las ruinas de una civilización súper futurista. La historia se cuenta de forma sutil, a través de notas dispersas y la exploración del mapa.",
-                aboutTitle: "Sobre O CHUVA Studio",
-                aboutText: "O CHUVA Studio es el estudio de juegos y proyecto en solitario del desarrollador brasileño Andrews Nycollas. Esposo de Dyez y padre de Aiden y Olivia, Andrews tiene amplia experiencia en la industria asiática de producción y publicación de juegos. Trabajando de forma independiente, aplica su experiencia profesional en el desarrollo de todos los frentes de sus juegos. <em>KYRO</em> es su título de debut como desarrollador en solitario.",
+                aboutTitle: "Sobre CHUVA Studio",
+                aboutText: "CHUVA Studio es el estudio de juegos y proyecto en solitario del desarrollador brasileño Andrews Nycollas. Esposo de Dyez y padre de Aiden y Olivia, Andrews tiene amplia experiencia en la industria asiática de producción y publicación de juegos. Trabajando de forma independiente, aplica su experiencia profesional en el desarrollo de todos los frentes de sus juegos. <em>KYRO</em> es su título de debut como desarrollador en solitario.",
                 downloadBtn: "Descargar Press Kit y Archivos Multimedia (.ZIP)"
             },
             de: {
                 themeLight: "Heller Modus",
                 themeDark: "Dunkler Modus",
                 pitchText: "<strong>KYRO</strong> ist ein Top-Down-Pixel-Art-Action-Adventure, inspiriert von Klassikern wie <em>The Legend of Zelda: A Link to the Past</em>, <em>Shadow of the Colossus</em> und der <em>Souls</em>-Reihe. Der Spieler übernimmt die Kontrolle über Aiden in Ka'a, einem amazonischen Sci-Fi-Szenario, mit dem Hauptziel, zu erkunden, stärker zu werden und eine Reihe herausfordernder Bosse zu besiegen, während die Geheimnisse der Welt subtil durch Environmental Storytelling enthüllt werden.",
+                awardTooltip: "Headscon 2026 Finalist",
                 trailerTitle: "Offizieller Trailer",
-                awardsTitle: "Auszeichnungen & Anerkennung",
                 steamBtn: "Steam-Seite besuchen",
                 factSheetTitle: "Datenblatt (Fact Sheet)",
                 devLabel: "Entwickler:",
@@ -599,16 +597,16 @@
                 f1Text: "Die Kernmechanik besteht aus dem Schießen von Projektilen mit einer Steinschleuder und dem Ausweichen durch ein \"Radschlagen\". Beides interagiert auf kreative Weise mit der Welt und den Feinden und erzeugt ein emergentes Gameplay. Das Radschlagen gewährt völlige Unverwundbarkeit und erzeugt Munition, wenn der Spieler absichtlich mit feindlichen Projektilen kollidiert. Aber auch Erkundung wird belohnt: Man kann Truhen finden und Töpfe in der Umgebung zerbrechen, um Munition und Lebensregeneration zu erhalten.",
                 f2Title: "Die Welt von Ka'a & Umwelt-Erzählung",
                 f2Text: "Ka'a ist eine dichte Dschungelinsel, die auf dem Ereignishorizont eines Schwarzen Lochs schwebt. Der Wald dient als Knotenpunkt, der den Bunker, in dem Aiden lebt, und die Ruinen einer super-futuristischen Zivilisation miteinander verbindet. Die Hintergrundgeschichte wird subtil durch verstreute Notizen und Kartenerkundung erzählt.",
-                aboutTitle: "Über O CHUVA Studio",
-                aboutText: "O CHUVA Studio ist das Spielestudio und Soloprojekt des brasilianischen Entwicklers Andrews Nycollas. Als Ehemann von Dyez und Vater von Aiden und Olivia verfügt Andrews über umfangreiche Erfahrung in der asiatischen Spieleproduktions- und Verlagsbranche. Unabhängig arbeitend, wendet er seinen professionellen Hintergrund auf die Entwicklung aller Aspekte seiner Spiele an. <em>KYRO</em> ist sein Debüttitel als Solo-Entwickler.",
+                aboutTitle: "Über CHUVA Studio",
+                aboutText: "CHUVA Studio ist das Spielestudio und Soloprojekt des brasilianischen Entwicklers Andrews Nycollas. Als Ehemann von Dyez und Vater von Aiden und Olivia verfügt Andrews über umfangreiche Erfahrung in der asiatischen Spieleproduktions- und Verlagsbranche. Unabhängig arbeitend, wendet er seinen professionellen Hintergrund auf die Entwicklung aller Aspekte seiner Spiele an. <em>KYRO</em> ist sein Debüttitel als Solo-Entwickler.",
                 downloadBtn: "Press Kit & Medien-Assets Herunterladen (.ZIP)"
             },
             zh: {
                 themeLight: "亮色模式",
                 themeDark: "暗色模式",
                 pitchText: "<strong>KYRO</strong> 是一款俯视角的像素风动作冒险游戏，灵感来源于《塞尔达传说：众神的三角力量》、《旺达与巨像》以及《魂》系列等经典作品。玩家将控制艾登（Aiden）在充满亚马逊科幻色彩的卡阿（Ka'a）世界中探索。核心目标是探索、变强并击败一系列具有挑战性的Boss，通过环境叙事巧妙地揭开这个世界的神秘面纱。",
+                awardTooltip: "2026年 Headscon 决赛入围者",
                 trailerTitle: "官方预告片",
-                awardsTitle: "奖项与认可",
                 steamBtn: "访问Steam页面",
                 factSheetTitle: "资料说明 (Fact Sheet)",
                 devLabel: "开发商:",
@@ -628,16 +626,16 @@
                 f1Text: "核心机制包括使用弹弓射击子弹，以及通过“侧手翻”进行闪避。两者以创造性的方式与世界和敌人互动，产生涌现式的游戏体验。侧手翻可提供完全的无敌状态，当玩家故意与敌方子弹碰撞时会生成弹药；探索同样有回报：您可以在场景中寻找宝箱和打破罐子，以获得弹药和生命值恢复。",
                 f2Title: "卡阿的世界与环境叙事",
                 f2Text: "卡阿（Ka'a）是一个漂浮在黑洞事件视界上的茂密丛林岛屿。森林作为一个枢纽，连接着艾登居住的地堡和一个超未来文明的废墟。游戏的背景故事通过散落的笔记和地图探索，以微妙的方式讲述。",
-                aboutTitle: "关于 O CHUVA Studio",
-                aboutText: "O CHUVA Studio 是巴西开发者 Andrews Nycollas 的游戏工作室兼个人项目。作为 Dyez 的丈夫，以及 Aiden 和 Olivia 的父亲，Andrews 在亚洲游戏制作和发行行业拥有丰富的经验。作为独立开发者，他将自己的专业背景应用于游戏开发的所有方面。<em>KYRO</em> 是他作为独立开发者的首发作品。",
+                aboutTitle: "关于 CHUVA Studio",
+                aboutText: "CHUVA Studio 是巴西开发者 Andrews Nycollas 的游戏工作室兼个人项目。作为 Dyez 的丈夫，以及 Aiden 和 Olivia 的父亲，Andrews 在亚洲游戏制作和发行行业拥有丰富的经验。作为独立开发者，他将自己的专业背景应用于游戏开发的所有方面。<em>KYRO</em> 是他作为独立开发者的首发作品。",
                 downloadBtn: "下载新闻资料包与媒体文件 (.ZIP)"
             },
             ja: {
                 themeLight: "ライトモード",
                 themeDark: "ダークモード",
                 pitchText: "<strong>KYRO</strong>は、『ゼルダの伝説 神々のトライフォース』、『ワンダと巨像』、『ソウル』シリーズなどの名作にインスパイアされた、見下ろし型のピクセルアート・アクションアドベンチャーゲームです。プレイヤーはアマゾンのSF世界「Ka'a」でエイデン（Aiden）を操作し、探索し、強くなり、挑戦的なボスたちを倒しながら、環境ストーリーテリングを通じて世界の謎をさりげなく解き明かしていくことが主な目的です。",
+                awardTooltip: "2026年 Headscon ファイナリスト",
                 trailerTitle: "公式トレイラー",
-                awardsTitle: "受賞と評価",
                 steamBtn: "Steamページにアクセス",
                 factSheetTitle: "ファクトシート",
                 devLabel: "開発元:",
@@ -657,8 +655,8 @@
                 f1Text: "基本となるメカニクスは、スリングショットによる発射と「側転」による回避です。どちらも創造的な方法で世界や敵と相互作用し、創発的なゲームプレイを生み出します。側転は完全な無敵状態を与え、プレイヤーが意図的に敵の弾に衝突した際に弾薬を生成します。また、探索にも報酬があります。マップに配置された宝箱を見つけたり、壺を壊したりすることで、弾薬や体力回復を得ることができます。",
                 f2Title: "Ka'aの世界と環境ストーリーテリング",
                 f2Text: "Ka'aは、ブラックホールの事象の地平線に浮かぶ鬱蒼としたジャングルの島です。森は、エイデンが住むバンカーと超未来的文明の遺跡を結ぶハブとして機能します。世界観は、散らばったメモやマップの探索を通じて、さりげなく語られます。",
-                aboutTitle: "O CHUVA Studio について",
-                aboutText: "O CHUVA Studioは、ブラジル人開発者Andrews Nycollasによるゲームスタジオ兼ソロプロジェクトです。Dyezの夫であり、AidenとOliviaの父親であるAndrewsは、アジアのゲーム制作およびパブリッシング業界で豊富な経験を持っています。独立して活動する彼は、自身の専門的なバックグラウンドをゲーム開発のあらゆる面に応用しています。<em>KYRO</em>は、ソロ開発者としての彼のデビュー作です。",
+                aboutTitle: "CHUVA Studio について",
+                aboutText: "CHUVA Studioは、ブラジル人開発者Andrews Nycollasによるゲームスタジオ兼ソロプロジェクトです。Dyezの夫であり、AidenとOliviaの父親であるAndrewsは、アジアのゲーム制作およびパブリッシング業界で豊富な経験を持っています。独立して活動する彼は、自身の専門的なバックグラウンドをゲーム開発のあらゆる面に応用しています。<em>KYRO</em>は、ソロ開発者としての彼のデビュー作です。",
                 downloadBtn: "プレスキットとメディアアセットをダウンロード (.ZIP)"
             }
         };
@@ -670,11 +668,25 @@
             const lang = e.target.value;
             const content = translations[lang];
 
-            // Atualiza todos os elementos que possuem data-i18n
+            // Atualiza textos internos (innerHTML)
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (content[key]) {
                     el.innerHTML = content[key];
+                }
+            });
+
+            // Atualiza atributos de Tooltip (title) e Acessibilidade (alt)
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                if (content[key]) {
+                    el.setAttribute('title', content[key]);
+                }
+            });
+            document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+                const key = el.getAttribute('data-i18n-alt');
+                if (content[key]) {
+                    el.setAttribute('alt', content[key]);
                 }
             });
 
